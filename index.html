@@ -1,1 +1,659 @@
-hello world
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAMSY • Company Overview</title>
+  <meta name="description" content="FAMSY company profile. FAMSY is the brand and operations company. FAMSYMall.com is our retail storefront." />
+
+  <!-- Open Graph / SEO basics -->
+  <meta property="og:title" content="FAMSY • Company Overview" />
+  <meta property="og:description" content="FAMSY company profile. FAMSY is the brand and operations company. FAMSYMall.com is our retail storefront." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://famsy.my/" />
+  <meta property="og:site_name" content="FAMSY" />
+
+  <!-- Schema.org Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FAMSY",
+    "url": "https://famsy.my/",
+    "logo": "https://famsy.my/favicon.png",
+    "sameAs": ["https://famsymall.com"],
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "hello@famsy.my"
+    }]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --panel: #fafbff;
+      --border: rgba(16,24,40,.08);
+      --muted: #475467;
+      --text: #101828;
+      --brand: #ff4d6d;
+      --brand-2: #ffd166;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(16,24,40,.08);
+      --maxw: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      letter-spacing: 0.1px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 60;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 70px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .2px; font-size: 18px; }
+    .brand-logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: radial-gradient(circle at 30% 30%, #fff 0, #fff 35%, transparent 36%), linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: var(--shadow); font-weight: 900; color: #7a0c21; }
+    nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 18px; }
+    nav a { color: var(--text); opacity: .85; font-weight: 600; }
+    nav a:hover { opacity: 1; }
+    .cta { display: inline-flex; align-items: center; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 700; cursor: pointer; box-shadow: 0 1px 0 rgba(16,24,40,.02); }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); text-decoration: none; }
+    .btn.primary { border-color: transparent; background: linear-gradient(135deg, var(--brand), #ff7187); color: #fff; }
+    .btn.ghost { background: transparent; }
+
+    /* Soft opening overlay */
+    .overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgba(255,255,255,.65); opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+    .overlay.active { opacity: 1; pointer-events: auto; }
+    .splash {
+      width: min(560px, 92vw); text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 30px; box-shadow: var(--shadow);
+      animation: pop .6s ease both;
+    }
+    .splash .logo { width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; margin: 0 auto 10px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #70111f; font-weight: 900; box-shadow: var(--shadow); }
+    .splash h2 { margin: 6px 0 4px; }
+    .splash p { color: var(--muted); }
+    @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0 } to { transform: translateY(0) scale(1); opacity: 1 } }
+
+    /* Router basics */
+    .route { display: none; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
+    .route.active { display: block; opacity: 1; transform: translateY(0); }
+
+    /* Hero */
+    .hero { padding: 92px 0 32px; background: linear-gradient(180deg, #fff, #fff 65%, #fff6f8); }
+    .hero .wrap { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 28px; align-items: center; }
+    .kicker { color: var(--brand); font-weight: 800; letter-spacing: .2em; text-transform: uppercase; font-size: 12px; }
+    h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.12; margin: 14px 0 10px; }
+    .lead { color: var(--muted); font-size: clamp(16px, 2vw, 18px); }
+    .hero-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
+    .stat { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: center; }
+    .stat b { font-size: 20px; color: var(--brand); }
+    .stat span { display: block; color: var(--muted); font-size: 12px; }
+
+    /* Sections */
+    section { padding: 54px 0; }
+    .section-title { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--brand); margin-bottom: 10px; font-weight: 900; }
+    h2 { font-size: clamp(24px, 3vw, 32px); margin: 8px 0 20px; }
+
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .grid { display: grid; gap: 16px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .badge { font-size: 12px; border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; color: var(--muted); display: inline-flex; gap: 8px; align-items: center; background: #fff; }
+
+    .list { display: grid; gap: 10px; }
+    .list li { background: #fff; border: 1px solid var(--border); padding: 12px 14px; border-radius: 12px; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .tab { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-weight: 700; }
+    .tab.active { background: linear-gradient(135deg, var(--brand), #ff7187); color: #fff; border-color: transparent; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Accordion */
+    .accordion { display: grid; gap: 10px; }
+    .acc-item { border: 1px solid var(--border); border-radius: 12px; background: #fff; }
+    .acc-head { padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; }
+    .acc-body { padding: 0 14px 14px; display: none; color: var(--muted); }
+    .acc-item.open .acc-body { display: block; }
+
+    /* Contact form */
+    form { display: grid; gap: 10px; }
+    .field { display: grid; gap: 6px; }
+    .field input, .field textarea, .field select { width: 100%; padding: 12px 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text); }
+    .field input:focus, .field textarea:focus, .field select:focus { outline: 2px solid rgba(255,77,109,.25); }
+    .help { font-size: 12px; color: var(--muted); }
+    .success { color: #16a34a; font-weight: 700; }
+    .error { color: #b42318; font-weight: 700; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 28px 0 60px; color: var(--muted); background: #fff; }
+    .foot { display: grid; gap: 14px; align-items: center; grid-template-columns: 1fr auto; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero .wrap { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .grid.cols-3 { grid-template-columns: 1fr; }
+      .grid.cols-2 { grid-template-columns: 1fr; }
+      .foot { grid-template-columns: 1fr; }
+      nav ul { display: none; }
+    }
+  /* Active link styles */
+    nav a.active { color: var(--brand); font-weight: 800; }
+    nav a.active::after { content: ""; display: block; height: 3px; background: linear-gradient(90deg, var(--brand), var(--brand-2)); border-radius: 2px; margin-top: 6px; }
+
+    /* Mobile nav */
+    .menu-toggle { display: none; border: 1px solid var(--border); background: #fff; border-radius: 10px; padding: 8px 12px; font-weight: 800; cursor: pointer; }
+    @media (max-width: 900px) {
+      .menu-toggle { display: inline-flex; align-items: center; gap: 8px; }
+      nav .nav-menu {
+        display: none; position: absolute; left: 0; right: 0; top: 70px; background: #fff; border-bottom: 1px solid var(--border); padding: 12px 20px; box-shadow: var(--shadow);
+      }
+      nav.open .nav-menu { display: block; }
+      nav .nav-menu li { padding: 8px 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Soft opening overlay -->
+  <div class="overlay active" id="softOpen" aria-hidden="true">
+    <div class="splash" role="dialog" aria-labelledby="soTitle" aria-describedby="soDesc">
+      <div class="logo">F</div>
+      <h2 id="soTitle">Welcome to FAMSY</h2>
+      <p id="soDesc">FAMSY is the brand and operations company. FAMSYMall.com is our retail site for shoppers. Explore the company profile below.</p>
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
+        <button class="btn primary" id="enterBtn">Enter site</button>
+        <a class="btn ghost" href="https://famsymall.com" target="_blank" rel="noopener">Shop FAMSYMall.com</a>
+      </div>
+      <p class="help" style="margin-top:10px">This intro closes automatically in 2.5 seconds.</p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header aria-label="Site Header">
+    <div class="container nav">
+      <a href="#/" class="brand" aria-label="FAMSY" data-link>
+        <span class="brand-logo" aria-hidden="true">F</span>
+        <span>FAMSY</span>
+      </a>
+      <nav aria-label="Primary" id="primaryNav">
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="primaryMenu" aria-label="Open menu">Menu</button>
+        <ul id="primaryMenu" class="nav-menu">
+          <li><a href="#/about" data-link>About</a></li>
+          <li><a href="#/retail" data-link>Retail</a></li>
+          <li><a href="#/stores" data-link>Stores</a></li>
+          <li><a href="#/careers" data-link>Careers</a></li>
+          <li><a href="#/contact" data-link>Contact</a></li>
+        </ul>
+      </nav>
+      <div class="cta">
+        <a class="btn" href="https://famsymall.com" target="_blank" rel="noopener">Visit FAMSYMall.com</a>
+        <a class="btn primary" href="#/contact" data-link>Get in touch</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ROUTES -->
+
+  <!-- Home -->
+  <main id="home" class="route active">
+    <section class="hero">
+      <div class="container">
+        <div class="wrap">
+          <div>
+            <span class="kicker">Company profile</span>
+            <h1>FAMSY - the brand behind <span style="white-space:nowrap">FAMSYMall.com</span></h1>
+            <p class="lead">FAMSY powers product design, sourcing, and customer experience for our retail operations. This site is a concise company overview. Shop our full catalog on <a href="https://famsymall.com" target="_blank" rel="noopener">FAMSYMall.com</a>.</p>
+            <div class="stats" role="list" aria-label="FAMSY at a glance">
+              <div class="stat" role="listitem"><b data-count="2016" data-format="year">2016</b><span>Year founded</span></div>
+              <div class="stat" role="listitem"><b data-count="1000000">0</b><span>Items shipped</span></div>
+              <div class="stat" role="listitem"><b>4.8★</b><span>Avg. rating</span></div>
+              <div class="stat" role="listitem"><b>15+</b><span>Countries served</span></div>
+            </div>
+            <div style="margin-top:22px; display:flex; gap:10px; flex-wrap:wrap;">
+              <span class="badge">Direct-to-consumer</span>
+              <span class="badge">Private label</span>
+              <span class="badge">Fast fulfillment</span>
+              <span class="badge">Customer-first</span>
+            </div>
+          </div>
+          <div class="hero-card" aria-label="Quick links">
+            <div class="grid cols-2">
+              <a class="btn" href="https://famsymall.com" target="_blank" rel="noopener" aria-label="Shop on FAMSYMall.com">Shop catalog →</a>
+              <a class="btn" href="#/contact" data-link>Business inquiries →</a>
+            </div>
+            <ul class="list" style="margin-top:14px">
+              <li><strong>Registered brand:</strong> FAMSY</li>
+              <li><strong>Company:</strong> Famsy Sdn Bhd (1303482-P)</li>
+              <li><strong>Company site:</strong> <a href="https://famsy.my">famsy.my</a></li>
+              <li><strong>Retail site:</strong> <a href="https://famsymall.com" target="_blank" rel="noopener">famsymall.com</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title">Relationship</div>
+        <h2>FAMSY (Company) and FAMSYMall.com (Retail)</h2>
+        <div class="panel">
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="co" role="tab" aria-selected="true">FAMSY (Company)</button>
+            <button class="tab" data-tab="retail" role="tab" aria-selected="false">FAMSYMall.com (Retail)</button>
+            <button class="tab" data-tab="policies" role="tab" aria-selected="false">Service policies</button>
+          </div>
+          <div id="co" class="tab-panel active" role="tabpanel">
+            <p>FAMSY is the brand and operations backbone. We design products, manage suppliers, control quality, and run logistics. This site is a short company profile for partners and press.</p>
+            <ul class="list">
+              <li>Supplier and OEM partnerships</li>
+              <li>QC and compliance - batch inspection and documentation</li>
+              <li>Warehousing and fulfillment playbooks</li>
+              <li>Customer experience standards for retail channels</li>
+            </ul>
+          </div>
+          <div id="retail" class="tab-panel" role="tabpanel">
+            <p>FAMSYMall.com is our shopper-facing store. It publishes the catalog, runs promotions, and handles all retail transactions.</p>
+            <ul class="list">
+              <li>Full catalog, pricing, and stock status</li>
+              <li>Checkout, shipping, and returns</li>
+              <li>Support center and live chat</li>
+              <li>Verified reviews and product Q&amp;A</li>
+            </ul>
+            <p><a class="btn" href="https://famsymall.com" target="_blank" rel="noopener">Explore FAMSYMall.com</a></p>
+          </div>
+          <div id="policies" class="tab-panel" role="tabpanel">
+            <ul class="list">
+              <li>30-day easy returns on eligible items</li>
+              <li>1-year limited warranty on manufacturing defects</li>
+              <li>Friendly support within 1 business day</li>
+              <li>Secure payments via trusted providers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- About route -->
+  <main id="about" class="route">
+    <section>
+      <div class="container grid cols-2">
+        <div class="panel">
+          <div class="section-title">About</div>
+          <h2>What we do</h2>
+          <p>FAMSY designs and distributes lifestyle products with a focus on practical quality. Our company website at <strong>famsy.my</strong> presents a concise profile of the brand, while <strong>famsymall.com</strong> is the retail storefront that serves customers.</p>
+          <p>We work closely with manufacturers, manage quality control, and run a tight fulfillment process. Customer feedback guides our product roadmap and service policies.</p>
+          <ul class="list" aria-label="Capabilities">
+            <li>Product design and sourcing</li>
+            <li>Branding and packaging</li>
+            <li>E-commerce operations</li>
+            <li>Logistics and after-sales support</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="section-title">Retail quick facts</div>
+          <h2>FAMSYMall.com at a glance</h2>
+          <ul class="list">
+            <li>Custom gift platform for apparel and merchandise</li>
+            <li>Serving Malaysia, Singapore, and Australia</li>
+            <li>Corporate and bulk ordering available</li>
+            <li>Support hours: Mon-Fri, 9:00-18:00 (MYT)</li>
+          </ul>
+          <p style="margin-top:6px"><a class="btn" href="https://www.famsymall.com/pages/about-us" target="_blank" rel="noopener">Read the full About page →</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Retail route -->
+  <main id="retailRoute" class="route">
+    <section>
+      <div class="container">
+        <div class="section-title">Retail</div>
+        <h2>FAMSYMall.com • Our store for shoppers</h2>
+        <div class="grid cols-3">
+          <div class="panel">
+            <h3>Catalog and personalization</h3>
+            <p>From tote bags to drinkware and keychains - with name and alphabet personalization options.</p>
+          </div>
+          <div class="panel">
+            <h3>Shipping and returns</h3>
+            <p>Fast local shipping and clear return policies designed to be hassle-free.</p>
+          </div>
+          <div class="panel">
+            <h3>Support</h3>
+            <p>Helpful customer service via email. We aim to respond within one business day.</p>
+          </div>
+        </div>
+        <p style="margin-top:12px"><a class="btn primary" href="https://famsymall.com" target="_blank" rel="noopener">Shop on FAMSYMall.com</a></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Stores route -->
+  <main id="stores" class="route">
+    <section>
+      <div class="container">
+        <div class="section-title">Retail Presence</div>
+        <h2>FAMSYMall store kiosks</h2>
+        <div class="grid cols-3">
+          <div class="panel">
+            <h3>Central i-City, Shah Alam</h3>
+            <p>Unit L1-05 • Tote Bags, Hana &amp; Kiera Bags, Sofia Bags, Drinkwear, Keychains • Daily 10am-10pm</p>
+          </div>
+          <div class="panel">
+            <h3>MyTown Shopping Centre, KL</h3>
+            <p>Pop Up Booth G29 • Tote &amp; Hana series, Alphabet Keychains, Bottles • 10am-10pm</p>
+          </div>
+          <div class="panel">
+            <h3>AEON Mall Shah Alam</h3>
+            <p>Lot KS08 (2F) • Tote Bags, Hana &amp; Kiera Bags, Sofia Bags, Drinkwear, Keychains • Daily 10am-10pm</p>
+          </div>
+        </div>
+        <p style="margin-top:10px"><a class="btn" href="https://www.famsymall.com/pages/our-stores" target="_blank" rel="noopener">See store details on FAMSYMall.com →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Careers route -->
+  <main id="careers" class="route">
+    <section>
+      <div class="container">
+        <div class="section-title">Careers</div>
+        <h2>Build with us at FAMSY</h2>
+        <div class="grid cols-2">
+          <div class="panel">
+            <h3>Our values</h3>
+            <ul class="list">
+              <li>Customers first - we win by earning trust</li>
+              <li>Raise the bar - iterate, improve, repeat</li>
+              <li>Ownership - clear goals and accountability</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Open roles (sample)</h3>
+            <ul class="list">
+              <li>Merchandise Planner (Shah Alam)</li>
+              <li>E-commerce Ops Executive (KL/Selangor)</li>
+              <li>Customer Support Representative (Remote/MYT)</li>
+            </ul>
+            <p style="margin-top:8px">Send your CV to <a href="mailto:careers@famsy.my">careers@famsy.my</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact route -->
+  <main id="contact" class="route">
+    <section>
+      <div class="container grid cols-2">
+        <div class="panel">
+          <div class="section-title">Contact</div>
+          <h2>Business inquiries</h2>
+          <p>For partnerships, distribution, or support, reach out anytime. We reply within 1 business day.</p>
+          <form id="contactForm" novalidate>
+            <div class="field">
+              <label for="name">Your name</label>
+              <input id="name" name="name" type="text" placeholder="Jane Doe" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="field">
+              <label for="topic">Topic</label>
+              <select id="topic" name="topic">
+                <option>Partnership</option>
+                <option>Wholesale</option>
+                <option>Press</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help" required></textarea>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button type="submit" class="btn primary">Send message</button>
+              <span class="help">or email us at <a href="mailto:hello@famsy.my">hello@famsy.my</a></span>
+            </div>
+            <div class="help" style="margin-top:8px">
+              Retail support: <a href="mailto:support@famsy.my">support@famsy.my</a> • Corporate: <a href="mailto:sales@famsy.my">sales@famsy.my</a>
+            </div>
+            <div id="formMsg" aria-live="polite" style="min-height:20px; margin-top:8px;"></div>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="section-title">Press kit</div>
+          <h2>Brand assets</h2>
+          <p>Need our logo or a short description for press mentions and listings? Download the brand kit below.</p>
+          <div class="grid cols-2">
+            <button class="btn" id="brandKitBtn">Download brand kit</button>
+            <button class="btn" id="companyProfileBtn">Company profile</button>
+          </div>
+          <p style="margin-top:12px; color:var(--muted); font-size:14px">Note: connect these buttons to your files. The demo shows a modal preview.</p>
+          <ul class="list" style="margin-top:12px">
+            <li><strong>Company:</strong> Famsy Sdn Bhd (1303482-P)</li>
+            <li><strong>Hours:</strong> Mon - Fri, 9:00 - 18:00 (MYT)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <div>
+        <div class="brand"><span class="brand-logo" aria-hidden="true">F</span><span>FAMSY</span></div>
+        <div style="margin-top:8px">© <span id="y"></span> FAMSY. All rights reserved.</div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center;">
+        <a class="btn" href="#/" data-link>Back to top ↑</a>
+        <a class="btn" href="https://famsymall.com" target="_blank" rel="noopener">Shop FAMSYMall.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Simple modal for brand kit and profile -->
+  <div class="overlay" id="modal">
+    <div class="splash" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <h3 id="modalTitle">Download</h3>
+      <p id="modalDesc">This is a demo. Replace with your files.</p>
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <a class="btn primary" id="modalLink" href="#" download>Download</a>
+        <button class="btn ghost" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Current year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Soft opening overlay
+    const soft = document.getElementById('softOpen');
+    const enterBtn = document.getElementById('enterBtn');
+    const closeSoft = () => soft.classList.remove('active');
+    if (enterBtn) enterBtn.addEventListener('click', closeSoft);
+    setTimeout(closeSoft, 2500);
+
+    // Tabs logic (on Home route)
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      const id = t.dataset.tab;
+      const panel = document.getElementById(id);
+      if (panel) panel.classList.add('active');
+    }));
+
+    // Accordion
+    document.querySelectorAll('.acc-head').forEach(h => {
+      h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+      h.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h.parentElement.classList.toggle('open'); } });
+    });
+
+    // Count up animation for stats (on first view)
+    const counters = document.querySelectorAll('[data-count]');
+    const inView = (el) => el.getBoundingClientRect().top < window.innerHeight * 0.9;
+    let counted = false;
+    const tick = () => {
+      if (counted) return;
+      if ([...counters].some(inView)) {
+        counted = true;
+        counters.forEach(el => {
+          const target = +el.dataset.count;
+          const isYear = el.dataset.format === 'year';
+          const start = isYear ? target : 0;
+          const duration = 1200;
+          const t0 = performance.now();
+          const step = (t) => {
+            const p = Math.min(1, (t - t0) / duration);
+            const val = Math.floor(start + (target - start) * p);
+            el.textContent = isYear ? val : val.toLocaleString();
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }
+    };
+    window.addEventListener('scroll', tick, { passive: true });
+    window.addEventListener('load', tick);
+
+    // Contact form validation + demo submit
+    const form = document.getElementById('contactForm');
+    const msg = document.getElementById('formMsg');
+    function validateEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+    if (form) form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (!data.name || !validateEmail(data.email) || !data.message) {
+        msg.innerHTML = '<span class="error">Please complete name, a valid email, and message.</span>';
+        return;
+      }
+      // Demo action - open mailto. Replace with your endpoint later.
+      const subject = encodeURIComponent(`[${data.topic}] New message from ${data.name}`);
+      const body = encodeURIComponent(`${data.message}\n\nFrom: ${data.name} <${data.email}>`);
+      window.location.href = `mailto:hello@famsy.my?subject=${subject}&body=${body}`;
+      msg.innerHTML = '<span class="success">Thanks. Your email client should open now.</span>';
+      form.reset();
+    });
+
+    // Modal demo for brand assets
+    const modal = document.getElementById('modal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modalLink = document.getElementById('modalLink');
+    const openModal = (title, href) => {
+      document.getElementById('modalTitle').textContent = title;
+      modalLink.setAttribute('href', href);
+      modal.classList.add('active');
+    };
+    if (closeModalBtn) closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+    const brandBtn = document.getElementById('brandKitBtn');
+    const profileBtn = document.getElementById('companyProfileBtn');
+    if (brandBtn) brandBtn.addEventListener('click', () => openModal('Brand kit (ZIP)', '#'));
+    if (profileBtn) profileBtn.addEventListener('click', () => openModal('Company profile (PDF)', '#'));
+
+    // Mobile nav toggle
+    const navEl = document.getElementById('primaryNav');
+    const toggleBtn = document.getElementById('menuToggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const open = navEl.classList.toggle('open');
+        toggleBtn.setAttribute('aria-expanded', String(open));
+      });
+      // Close on navigation
+      document.querySelectorAll('nav [data-link]').forEach(a => a.addEventListener('click', () => {
+        navEl.classList.remove('open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    // SPA Router (hash-based)
+    const routes = {
+      '/': 'home',
+      '/about': 'about',
+      '/retail': 'retailRoute',
+      '/stores': 'stores',
+      '/careers': 'careers',
+      '/contact': 'contact'
+    };
+
+    function setActiveLink(path){
+      document.querySelectorAll('nav [data-link]').forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+      const link = document.querySelector(`nav [href="#${path}"]`);
+      if (link) { link.classList.add('active'); link.setAttribute('aria-current','page'); }
+    }
+
+    function render(){
+      const hash = location.hash.replace('#', '') || '/';
+      const path = hash.startsWith('/') ? hash : '/' ;
+      Object.values(routes).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+      const id = routes[path] || 'home';
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+      setActiveLink(path);
+      target?.setAttribute('tabindex','-1');
+      target?.focus({preventScroll:true});
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    window.addEventListener('hashchange', render);
+    window.addEventListener('load', render);
+
+    // Progressive Web App - inline manifest and simple SW via Blob
+    try {
+      const manifest = {
+        name: 'FAMSY', short_name: 'FAMSY', start_url: './', display: 'standalone', background_color: '#ffffff', theme_color: '#ff4d6d', icons: []
+      };
+      const manifestURL = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type: 'application/json'}));
+      const link = document.createElement('link'); link.rel = 'manifest'; link.href = manifestURL; document.head.appendChild(link);
+
+      if ('serviceWorker' in navigator) {
+        const swCode = `self.addEventListener('install', e=>{e.waitUntil(caches.open('famsy-v1').then(c=>c.addAll(['./'])))});self.addEventListener('fetch', e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`;
+        const swURL = URL.createObjectURL(new Blob([swCode], {type: 'text/javascript'}));
+        navigator.serviceWorker.register(swURL).catch(()=>{});
+      }
+    } catch (e) { /* noop */ }
+
+    // Smooth internal navigation for non-route anchors
+    document.querySelectorAll('a[href^="#/"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        // allow router to handle
+      });
+    });
+  </script>
+</body>
+</html>
